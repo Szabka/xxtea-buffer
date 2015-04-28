@@ -14,6 +14,7 @@ function bufToLongArray(buf) {
     if (buf.length % 4 != 0) throw Error("buf length must be double word aligned (n*4bytes).");
     for (var j=0; j<buf.length/4; j++) {
         result[j] = buf.readUInt32LE(j*4);
+        if (_debug) console.log("j|result[j]: " + j + "|" + result[j]);
     }
     return result;
 }
@@ -71,8 +72,9 @@ XXTeaBuffer.prototype.decrypt = function(encrypted) {
     var n = v.length;
     var z=v[n-1], y=v[0], sum=0, e, p, q, mx;
 
-    q = 6 + 52/n;
+    q = Math.floor(6 + 52/n);
     sum = (q*_delta) & 0xffffffff;
+    if (_debug) console.log('sum: ' + sum);
     while (sum != 0) {
         e = (sum >> 2) & 3;
         for (p=n-1; p>0; p--) {
@@ -84,6 +86,8 @@ XXTeaBuffer.prototype.decrypt = function(encrypted) {
         mx = (z >>> 5 ^ y << 2) + (y >>> 3 ^ z << 4) ^ (sum ^ y) + (_keyArray[p & 3 ^ e] ^ z);
         y = v[0] = (v[0] - mx) & 0xffffffff;
         sum = (sum - _delta) & 0xffffffff;
+        q--;
+        if (_debug) console.log('sum|q again: ' + sum + '|'+ q);
     }
     return longArrayToBuf(v);
 };
