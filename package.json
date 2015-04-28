@@ -1,0 +1,19 @@
+{
+  "name": "xxtea-buffer",
+  "version": "1.0.0",
+  "description": "xxtea block cipher node.js library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha test"
+  },
+  "keywords": [
+    "xxtea",
+    "buffer",
+    "node.js"
+  ],
+  "author": "szabka,csibug",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "1.*"
+  }
+}
