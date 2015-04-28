@@ -6,6 +6,7 @@ var XXTeaBuffer = function() {};
 var _key = null;
 var _keyArray = [];
 var _debug = false;
+var _isLE = true;
 
 var _delta = 0x9e3779b9;
 
@@ -13,7 +14,10 @@ function bufToLongArray(buf) {
     var result = [];
     if (buf.length % 4 != 0) throw Error("buf length must be double word aligned (n*4bytes).");
     for (var j=0; j<buf.length/4; j++) {
-        result[j] = buf.readUInt32LE(j*4);
+        if (_isLE)
+            result[j] = buf.readUInt32LE(j*4);
+        else 
+            result[j] = buf.readUInt32BE(j*4);
         if (_debug) console.log("j|result[j]: " + j + "|" + result[j]);
     }
     return result;
@@ -23,7 +27,11 @@ function longArrayToBuf(la) {
     var bres = new Buffer(la.length*4);
     for (var j=0; j<la.length; j++) {
         if (_debug) console.log("j|bres.toString(hex)|la[j]: " + j + "|" + bres.toString("hex") + "|" + la[j]);
-        bres.writeInt32LE(la[j],j*4);
+        if (_isLE)
+            bres.writeInt32LE(la[j],j*4);
+        else
+            bres.writeInt32BE(la[j],j*4);
+
     }
     return bres;
 }
@@ -43,6 +51,10 @@ XXTeaBuffer.prototype.setKey = function(key) {
     if (_key.length != 16) throw Error("key length must be 128 bits (16 bytes), or 32 hex digits");
     _keyArray = bufToLongArray(_key);
     if (_debug) console.log("keyArray: " + _keyArray);
+};
+
+XXTeaBuffer.prototype.setBE = function(bval) {
+    _isLE = !bval;
 };
 
 XXTeaBuffer.prototype.encrypt = function(plain) {

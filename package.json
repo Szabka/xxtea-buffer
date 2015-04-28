@@ -3,17 +3,33 @@
   "version": "1.0.0",
   "description": "xxtea block cipher node.js library.",
   "main": "index.js",
+  "homepage": "https://github.com/Szabka/xxtea-buffer",
+  "engines" : { "node" : ">=0.10.36" },
+  "contributors": [
+      {
+          "name": "csibug"
+      }
+  ],
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test"
+  },
+   "repository": {
+     "type": "git",
+     "url": "https://github.com/Szabka/xxtea-buffer"
+  },
+     "bugs": {
+     "url": "https://github.com/Szabka/xxtea-buffer/issues"
   },
   "keywords": [
     "xxtea",
     "buffer",
     "node.js"
   ],
-  "author": "szabka,csibug",
+  "author": "Szabka",
   "license": "ISC",
   "devDependencies": {
     "mocha": "1.*"
+  },
+  "dependencies": {
   }
 }
