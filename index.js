@@ -18,7 +18,7 @@ function bufToLongArray(buf) {
             result[j] = buf.readUInt32LE(j*4);
         else 
             result[j] = buf.readUInt32BE(j*4);
-        if (_debug) console.log("j|result[j]: " + j + "|" + result[j]);
+        //if (_debug) console.log("j|result[j]: " + j + "|" + result[j]);
     }
     return result;
 }
@@ -26,11 +26,11 @@ function bufToLongArray(buf) {
 function longArrayToBuf(la) {
     var bres = new Buffer(la.length*4);
     for (var j=0; j<la.length; j++) {
-        if (_debug) console.log("j|bres.toString(hex)|la[j]: " + j + "|" + bres.toString("hex") + "|" + la[j]);
         if (_isLE)
             bres.writeInt32LE(la[j],j*4);
         else
             bres.writeInt32BE(la[j],j*4);
+        //if (_debug) console.log("j|bres.toString(hex)|la[j]: " + j + "|" + bres.toString("hex") + "|" + la[j]);
 
     }
     return bres;
@@ -62,7 +62,7 @@ XXTeaBuffer.prototype.encrypt = function(plain) {
     var n = v.length;
     var z=v[n-1], y=v[0], sum=0, e, p, q, mx;
 
-    q = 6 + 52/n;
+    q = Math.floor(6 + 52/n);
     while (q-- > 0) {
         sum = (sum + _delta) & 0xffffffff;
         e = (sum >> 2) & 3;
